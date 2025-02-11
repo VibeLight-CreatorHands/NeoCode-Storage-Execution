@@ -1,0 +1,42 @@
+# Python関連
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.dist-info/
+venv/
+env/
+.venv/
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# 環境変数ファイル
+.env
+.env.local
+.env.*.local
+
+# ログファイル
+logs/
+*.log
+nohup.out
+
+# VSCode関連
+.vscode/
+.settings/
+*.code-workspace
+
+# OS関連
+.DS_Store
+Thumbs.db
+
+# JetBrains関連（PyCharmなど）
+.idea/
+*.iml
+
+# FastAPI関連
+instance/
+db.sqlite3
+
+# Docker関連
+docker-compose.override.yml
