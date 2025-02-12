@@ -1,5 +1,5 @@
+discord.py
 fastapi
 uvicorn
-discord.py
-pydantic
-requests
+sqlalchemy
+aiosqlite
