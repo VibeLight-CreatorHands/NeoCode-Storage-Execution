@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import os
 import logging
-from database import init_db, get_balance, update_balance
+from database import init_db, get_user_data, convert_currency, get_crypto_rate, update_crypto_rate, update_balance, get_balance
 
 # ログの設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -72,6 +72,35 @@ async def transfer(interaction: discord.Interaction, member: discord.Member, amo
   update_balance(sender_id, -amount)
   update_balance(receiver_id, amount)
   await interaction.response.send_message(f"✅ {interaction.user.name} から {member.name} に {amount} P を送金しました！")
+
+# 🔹 現在の仮想通貨レートを表示
+@bot.tree.command(name="crypto_price", description="仮想通貨の現在のレートを表示します")
+async def crypto_price(interaction: discord.Interaction):
+  rate = get_crypto_rate()
+  await interaction.response.send_message(f"📈 現在のレート: 1 YUYUCOIN = {rate} P")
+
+# 🔹 ポイント ↔ 仮想通貨の交換
+@bot.tree.command(name="convert", description="ポイントと仮想通貨を交換します")
+async def convert(interaction: discord.Interaction, amount: float, to_crypto: bool):
+  user_id = str(interaction.user.id)
+  success = convert_currency(user_id, amount, to_crypto)
+
+  if not success:
+    await interaction.response.send_message("❌ 変換に失敗しました（残高不足の可能性あり）")
+    return
+
+  balance, crypto = get_user_data(user_id)
+  await interaction.response.send_message(
+    f"✅ 変換完了！\n💰 現在のポイント: {balance} P\n🪙 仮想通貨: {crypto:.4f} YUYUCOIN"
+    )
+
+# 🔹 仮想通貨レートを変更（管理者のみ）
+@bot.tree.command(name="market_update", description="仮想通貨のレートを変更（管理者専用）")
+@commands.has_permissions(administrator=True)
+async def market_update(interaction: discord.Interaction, new_rate: float):
+  update_crypto_rate(new_rate)
+  await interaction.response.send_message(f"✅ 仮想通貨レートを {new_rate} P に更新しました！")
+
   # 🔹 エラーハンドリング
 @bot.event
 async def on_command_error(ctx, error):
