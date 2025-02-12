@@ -52,6 +52,20 @@ def update_crypto_rate(new_rate: float):
     session.commit()
     session.close()
 
+# ユーザーのポイント残高を更新する関数（追加！）
+def update_balance(user_id: str, amount: int):
+    session = SessionLocal()
+    user = session.query(UserBalance).filter(UserBalance.user_id == user_id).first()
+            
+    if not user:
+        user = UserBalance(user_id=user_id)
+        session.add(user)
+
+    user.balance += amount
+    session.commit()
+    session.close()
+    return user.balance  # 更新後の残高を返す
+
 # ユーザーのポイントと仮想通貨を取得
 def get_user_data(user_id: str):
     session = SessionLocal()
