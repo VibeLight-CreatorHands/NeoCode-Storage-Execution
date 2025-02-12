@@ -4,6 +4,8 @@ from discord import app_commands
 import os
 import logging
 from database import init_db, get_user_data, convert_currency, get_crypto_rate, update_crypto_rate, update_balance, get_balance
+from datetime import datetime, timedelta
+import asyncio
 
 # ログの設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -20,11 +22,30 @@ bot = commands.Bot(command_prefix="y!", intents=intents)
 # データベースの設定
 init_db()
 
-# Bot起動時の処理
+# 最後のアクティビティ時刻を記録
+last_active = datetime.now()
+
+async def monitor_activity():
+  """10分間アクティビティがなかったらBotを自動停止"""
+  global last_active
+  while True:
+    await asyncio.sleep(60)  # 1分ごとにチェック
+    if datetime.now() - last_active > timedelta(minutes=10):
+      print("⏳ 10分間アクティビティなし、Botを停止します")
+      os._exit(0)  # プロセスを終了（Railway上では停止扱いになる）
+
 @bot.event
 async def on_ready():
-    logger.info(f"✅ {bot.user} がログインしました！")
-
+  """Botが起動したら監視を開始"""
+  bot.loop.create_task(monitor_activity())
+  logger.info(f"✅ {bot.user} がログインしました！")
+@bot.event
+async def on_message(message):
+  """コマンドやメッセージを受信したらアクティビティを更新"""
+  global last_active
+  last_active = datetime.now()  # 最後のアクティビティ時刻を更新
+  await bot.process_commands(message)  # コマンドの処理を続ける
+                                                                    
 # シンプルなスラッシュコマンド
 @bot.tree.command(name="hello", description="Botが挨拶します")
 async def hello(interaction: discord.Interaction):
