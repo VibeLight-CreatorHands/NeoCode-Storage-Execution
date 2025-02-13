@@ -36,8 +36,15 @@ async def monitor_activity():
 
 @bot.event
 async def on_ready():
-  """Botが起動したら監視を開始"""
+  """Botが起動したら監視を開始し、スラッシュコマンドを同期"""
   bot.loop.create_task(monitor_activity())
+            
+  try:
+      synced = await bot.tree.sync()
+      logger.info(f"✅ スラッシュコマンド {len(synced)} 件を同期しました！")
+  except Exception as e:
+      logger.error(f"❌ スラッシュコマンドの同期に失敗: {e}")
+
   logger.info(f"✅ {bot.user} がログインしました！")
 @bot.event
 async def on_message(message):
