@@ -206,4 +206,4 @@ Yuyuto.jp server multi-script code storage system and its execution API package
 ---
 
 これらのリクエストボディは、すべてJSON文字列として`sys.stdin.read()`に渡されることを想定しています。
-また、これらは完全に例なので気を付けてください。
+また、これらは完全に例なので自分の送りたいものに変えてください。
