@@ -34,17 +34,12 @@ async def root():
 # 非同期でスクリプトを実行するエンドポイント
 @app.post("/execute/{script_name}")
 async def execute_script(script_name: str):
-    # スクリプトの絶対パスを構築
     script_path = SCRIPT_DIRECTORY / script_name
 
-    # スクリプトが存在するか確認
     if not script_path.is_file():
         raise HTTPException(status_code=404, detail="Script not found")
 
-    # 非同期実行
     result = await run_script(script_path)
-
-    # 結果をJSONレスポンスとして返す
     return {
         "script_name": script_name,
         "stdout": result.stdout,
