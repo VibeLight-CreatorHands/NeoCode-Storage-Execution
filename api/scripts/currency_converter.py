@@ -5,16 +5,12 @@ import json
 input_data = json.loads(sys.stdin.read())
 
 # 必要な値を取得
-password = input_data["password"]
+amount = input_data["amount"]
+rate = input_data["rate"]
 
-# パスワード強度チェック
-strength = "Weak"
-if len(password) >= 8 and any(c.isdigit() for c in password) and any(c.isupper() for c in password) and any(c.islower() for c in password):
-    strength = "Strong"
-elif len(password) >= 6:
-    strength = "Moderate"
-
-result = f"Password strength: {strength}"
+# 通貨変換
+converted_amount = amount * rate
+result = f"Converted amount: {converted_amount:.2f}"
 
 # 結果を出力
 print(result)
