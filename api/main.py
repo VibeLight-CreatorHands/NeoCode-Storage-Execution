@@ -7,7 +7,7 @@ from pathlib import Path
 app = FastAPI()
 
 # スクリプトが保存されているディレクトリ（絶対パスで指定）
-SCRIPT_DIRECTORY = Path(__file__).parent / "api" / "scripts"
+SCRIPT_DIRECTORY = Path(__file__).parent  / "scripts"
 
 # 非同期でスクリプトを実行する関数
 async def run_script(script_path: Path):
