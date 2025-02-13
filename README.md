@@ -205,7 +205,7 @@ Yuyuto.jp server multi-script code storage system and its execution API package
 
 ### 14. `factorial.py`  
 - 指定された数の階乗を計算します（n! = n * (n-1) * ... * 1）。
-- numberに階乗を計算したい数を指定します。
+- numberに階乗を計算したい数を指定します(最大1500)。
 リクエストボディ:
 ```json
 {
