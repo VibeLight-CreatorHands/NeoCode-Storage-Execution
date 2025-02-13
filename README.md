@@ -115,5 +115,95 @@ Yuyuto.jp server multi-script code storage system and its execution API package
 
 ---
 
+### 12. `string_processor.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"text\": \"Hello OpenAI\"}"
+}
+```
+
+---
+
+### 13. `prime_checker.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"number\": 29}"
+}
+```
+
+---
+
+### 14. `factorial.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"number\": 5}"
+}
+```
+
+---
+
+### 15. `palindrome_checker.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"text\": \"radar\"}"
+}
+```
+
+---
+
+### 16. `fibonacci_generator.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"count\": 10}"
+}
+```
+
+---
+
+### 17. `weather_simulator.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"city\": \"New York\", \"unit\": \"Celsius\"}"
+}
+```
+
+---
+
+### 18. `random_number_generator.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"min\": 1, \"max\": 100}"
+}
+```
+
+---
+
+### 19. `currency_converter.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"amount\": 100, \"from_currency\": \"USD\", \"to_currency\": \"JPY\"}"
+}
+```
+
+---
+
+### 20. `password_strength_checker.py`  
+リクエストボディ:
+```json
+{
+  "input_value": "{\"password\": \"SecureP@ssw0rd\"}"
+}
+```
+
+---
+
 これらのリクエストボディは、すべてJSON文字列として`sys.stdin.read()`に渡されることを想定しています。
 また、これらは完全に例なので気を付けてください。
