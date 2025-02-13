@@ -63,16 +63,18 @@ def get_balance(user_id: str):
 def update_balance(user_id: str, amount: int):
     session = SessionLocal()
     user = session.query(UserBalance).filter(UserBalance.user_id == user_id).first()
-            
+                        
     if not user:
-        user = UserBalance(user_id=user_id)
+        user = UserBalance(user_id=user_id, balance=0)  # 初期化
         session.add(user)
 
-    user.balance += amount
-    session.commit()
-    session.close()
-    return user.balance  # 更新後の残高を返す
+    if user.balance is None:  # None の場合、0 に初期化
+        user.balance = 0
 
+        user.balance += amount
+        session.commit()
+        session.close()
+        return user.balance  # 更新後の残高を返す
 # ユーザーのポイントと仮想通貨を取得
 def get_user_data(user_id: str):
     session = SessionLocal()
