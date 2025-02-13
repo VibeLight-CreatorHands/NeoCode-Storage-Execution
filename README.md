@@ -15,7 +15,7 @@ Yuyuto.jp server multi-script code storage system and its execution API package
 
 ---
 
-### 2. `text_to_morse.py`  
+### 2. `morse.py`  
 リクエストボディ:
 ```json
 {
