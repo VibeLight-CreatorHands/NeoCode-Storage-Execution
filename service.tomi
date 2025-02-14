@@ -3,3 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "pip install -r requirements.txt"
 [start]
 startCommand = "python discordbot/main.py"
+[[services]]
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
