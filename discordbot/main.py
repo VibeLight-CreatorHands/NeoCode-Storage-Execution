@@ -11,6 +11,9 @@ import asyncio
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
+# 最後のアクティビティ時刻を記録するグローバル変数
+last_active = datetime.now()
+
 # Intents（必要な権限を設定）
 intents = discord.Intents.default()
 intents.message_content = True  # メッセージの内容を取得するために必要
@@ -26,32 +29,36 @@ init_db()
 last_active = datetime.now()
 
 async def monitor_activity():
-  """10分間アクティビティがなかったらBotを自動停止"""
-  global last_active
-  while True:
-    await asyncio.sleep(60)  # 1分ごとにチェック
-    if datetime.now() - last_active > timedelta(minutes=10):
-      print("⏳ 10分間アクティビティなし、Botを停止します")
-      os._exit(0)  # プロセスを終了（Railway上では停止扱いになる）
+    """10分間アクティビティがなかったらBotを自動停止"""
+    global last_active
+    while True:
+        await asyncio.sleep(60)  # 1分ごとにチェック
+        if datetime.now() - last_active > timedelta(minutes=10):
+            logger.info("⏳ 10分間アクティビティなしのため、Botを停止します")
+            os._exit(0)  # プロセス終了
+        else:
+            logger.debug(f"🔄 アクティビティ確認: 最終更新 {last_active}")
 
 @bot.event
 async def on_ready():
-  """Botが起動したら監視を開始し、スラッシュコマンドを同期"""
-  bot.loop.create_task(monitor_activity())
-            
-  try:
-      synced = await bot.tree.sync()
-      logger.info(f"✅ スラッシュコマンド {len(synced)} 件を同期しました！")
-  except Exception as e:
-      logger.error(f"❌ スラッシュコマンドの同期に失敗: {e}")
+    logger.info(f"✅ {bot.user} がログインしました！")
+    bot.loop.create_task(monitor_activity())
 
-  logger.info(f"✅ {bot.user} がログインしました！")
 @bot.event
 async def on_message(message):
-  """コマンドやメッセージを受信したらアクティビティを更新"""
-  global last_active
-  last_active = datetime.now()  # 最後のアクティビティ時刻を更新
-  await bot.process_commands(message)  # コマンドの処理を続ける
+    global last_active
+    # ボット自身のメッセージは除外
+    if message.author.bot:
+        return
+    last_active = datetime.now()
+    await bot.process_commands(message)
+
+# 追加: スラッシュコマンド等のインタラクションもカバー
+@bot.event
+async def on_interaction(interaction: discord.Interaction):
+    global last_active
+    last_active = datetime.now()
+    logger.info(f"🔄 Interaction received from {interaction.user}")
                                                                     
 # シンプルなスラッシュコマンド
 @bot.tree.command(name="hello", description="Botが挨拶します")
