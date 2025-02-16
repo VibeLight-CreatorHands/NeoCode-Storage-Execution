@@ -19,9 +19,6 @@ last_active = datetime.now()
 intents = discord.Intents.default()
 intents.message_content = True  # メッセージの内容を取得するために必要
 
-# botインスタンスを作成
-client = discord.Client()
-
 # Botの設定
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")  # 環境変数からトークンを取得
 bot = commands.Bot(command_prefix="y!", intents=intents)
