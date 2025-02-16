@@ -61,10 +61,10 @@ async def on_interaction(interaction: discord.Interaction):
     last_active = datetime.now()
     logger.info(f"🔄 Interaction received from {interaction.user}")
                                                                     
-@client.event
+@bot.event
 async def on_message(message):
 # 自分のメッセージには反応しない
-  if message.author == client.user:
+  if message.author == bot.user:
     return
                     
 # メッセージ内容に応じて反応
