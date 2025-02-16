@@ -6,6 +6,7 @@ import logging
 from database import init_db, get_user_data, convert_currency, get_crypto_rate, update_crypto_rate, update_balance, get_balance
 from datetime import datetime, timedelta
 import asyncio
+import re
 
 # ログの設定
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -17,6 +18,9 @@ last_active = datetime.now()
 # Intents（必要な権限を設定）
 intents = discord.Intents.default()
 intents.message_content = True  # メッセージの内容を取得するために必要
+
+# botインスタンスを作成
+client = discord.Client()
 
 # Botの設定
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")  # 環境変数からトークンを取得
@@ -60,6 +64,35 @@ async def on_interaction(interaction: discord.Interaction):
     last_active = datetime.now()
     logger.info(f"🔄 Interaction received from {interaction.user}")
                                                                     
+@client.event
+async def on_message(message):
+# 自分のメッセージには反応しない
+  if message.author == client.user:
+    return
+                    
+# メッセージ内容に応じて反応
+  if re.search(r'ゆゆと|だお|ゆゆちゃ|青|🤩|🤯', message.content):
+    await message.add_reaction("🤩")
+                                        
+  if re.search(r'ゆゆと|だお|にゃーん', message.content):
+    await message.channel.send("みんなのゆゆとだお。なんか話すど(ﾟ∀ﾟ)!?")
+                                                        
+  if re.search(r'おーい|★|にゃ～ん', message.content):
+    await message.channel.send("(ﾟ∀ﾟ)")
+                                                                        
+  if re.search(r'おやすみ', message.content):
+    await message.author.send('おやすみ～！また明日！ﾓﾌﾓﾌ(੭ु ›ω‹ )੭ुﾓﾌﾓﾌ')
+                                                                                        
+  if re.search(r'02', message.content):
+    await message.channel.send("お疲れ様(∩⁠>ω⁠<⁠*⁠∩)")
+                                                                                                        
+  if re.search(r'よろしく|よろ|やぁ', message.content):
+    await message.channel.send("( ｀・∀・´)ﾉﾖﾛｼｸ")
+                                                                                                                        
+  if re.search(r'過疎|かそ|カソ', message.content):
+    await message.channel.send("<@&1287670773040812093>")
+  await message.channel.send("https://tenor.com/view/%E9%81%8E%E7%96%8E-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC-server-gif-24904455")
+                                                                                                                                    
 # シンプルなスラッシュコマンド
 @bot.tree.command(name="hello", description="Botが挨拶します")
 async def hello(interaction: discord.Interaction):
