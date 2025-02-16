@@ -88,7 +88,7 @@ async def on_message(message):
                                                                                                                         
   if re.search(r'過疎|かそ|カソ', message.content):
     await message.channel.send("<@&1287670773040812093>")
-  await message.channel.send("https://tenor.com/view/%E9%81%8E%E7%96%8E-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC-server-gif-24904455")
+    await message.channel.send("https://tenor.com/view/%E9%81%8E%E7%96%8E-%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC-server-gif-24904455")
                                                                                                                                     
 # シンプルなスラッシュコマンド
 @bot.tree.command(name="hello", description="Botが挨拶します")
