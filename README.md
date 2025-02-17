@@ -1,7 +1,11 @@
-# Code-Storage-Execution
-Yuyuto.jp server multi-script code storage system and its execution API package
+# NeoCode-Storage-Execution
+Yuyuto.jp server multi-script code storage system and its execution API package.
 
-# API RequestBody
+# 概要
+言葉の通り、多くの言語をサポートした自立進化型ストレージ&実行システムです。主にリポ主は自作の大規模サーバーのAPIパッケージやバックエンドとして利用してます。
+システムには、ExecutionAPIというAPIがあり、これを使用してオリジナルライブラリやストレージにアクセスしてスクリプト実行したり、コミットしたりできます。
+また、このシステムは「自己進化型」なので、AIや鯖主、管理者なんかが別システム上でコミットしています。皆さんがコミットできるのは第三システムのみなのでご注意ください。
+# ExecutionAPI RequestBody
 
 ここでは、基本的なCodeStoradge-Executionの使い方について紹介します。
 ## 第一前提として
